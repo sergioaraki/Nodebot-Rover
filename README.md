@@ -14,7 +14,7 @@
 
 This tutorial will work with raspbian-wheezy, you can download this from [here](https://downloads.raspberrypi.org/raspbian/images/raspbian-2015-05-07/2015-05-05-raspbian-wheezy.zip), is not working with jessie yet...
 
-Make a clean install of raspbian-wheezy on your sdcard, instructions [here](https://www.raspberrypi.org/documentation/installation/installing-images/) 
+Make a clean install of raspbian-wheezy on your sdcard, instructions [here](https://www.raspberrypi.org/documentation/installation/installing-images/). 
 For the first steps you will need a TV or monitor with HDMI, USB keyboard, USB mouse and the USB Wifi dongle connected.
 
 In the first boot in raspi-config expand file system, enable ssh, camera module and piface, also change hostname from raspberrypi to nodebot.
@@ -50,12 +50,13 @@ Upgrade system with these commands:
 	sudo apt-get update
 	sudo apt-get -y upgrade
 	sudo rpi-update
-
 	sudo nano /boot/cmdline.txt
 
 At the end of the line add one space and: 
 
 	cgroup_enable=memory
+
+Reboot:
 
 	sudo reboot
 
@@ -69,7 +70,9 @@ After reboot:
 	cd ../scripts
 	sudo ./spidev-setup
 
-sudo reboot
+Reboot:
+
+	sudo reboot
 
 After reboot:
 
@@ -85,9 +88,7 @@ Pay attention it should ask you to run another command, copy, paste and run that
 	cd Robot
 	npm install
 	cd ..
-
 	sudo apt-get -y install hostapd isc-dhcp-server
-
 	sudo nano /etc/dhcp/dhcpd.conf
 
 Comment this 2 lines:
@@ -215,9 +216,9 @@ Save, exit and then execute this commands:
 	pm2 save
 	sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 
-remove the wifi configuration added before, save and exit
+remove the wifi configuration added before, save, exit and reboot:
 
-	sudo reboot
+		sudo reboot
 
 Now you can connect to the Nodebot wifi in your computer or smartphone and access in your browser to: http://192.168.42.1:3000 and get control of your nodebot.
 
