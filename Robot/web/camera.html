@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Robot</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+  <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Robot</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/index.html">Controles</a></li>
+            <li class="active"><a href="#">Camara</a></li>
+	    <li><a href="/gallery.html">Galeria</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+  <div class="container">
+	<!--width=640 height=480-->
+	<div id="camera" class="embed-responsive embed-responsive-16by9">
+      		<iframe class="embed-responsive-item" src="/liveCamera"></iframe>
+	</div>
+	<br><br>
+	<div id="joy" style="display: block;position: absolute;width:100%;height:100%;min-height:100%"></div>
+  </div>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/socket.io.js"></script>
+    <script src="js/nipplejs.min.js"></script>
+    <script type="text/javascript">
+    var pathArray = window.location.host.split(':');
+    var socket = io.connect(window.location.protocol+'//'+pathArray[0]+':8082');
+    socket.emit('camera',$("#camera").width());
+    var manager = nipplejs.create({
+      zone: document.getElementById('joy'),
+      color: 'blue'
+    });
+    manager.on('added', function(evt, nipple){
+      nipple.on('plain:up', function(){
+        socket.emit('front');
+      });
+      nipple.on('plain:down', function(){
+        socket.emit('stop');
+      });
+      nipple.on('plain:left', function(){
+        socket.emit('left');
+      });
+      nipple.on('plain:right', function(){
+        socket.emit('right');
+      });
+    }).on('removed', function(){
+       socket.emit('stop');
+    });
+    </script>
+  </body>
+</html>
+

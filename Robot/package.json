@@ -1,0 +1,20 @@
+{
+  "name": "Robot",
+  "version": "0.0.1",
+  "description": "Controlador del Robot",
+  "main": "Robot.js",
+  "private": true,
+  "author": {
+    "name": "Sergio Araki",
+    "url": "http://www.sergioaraki.com.ar/"
+  },
+  "dependencies": {
+    "express": "*",
+    "raspicam": "*",
+    "piface-node": "*",
+    "socket.io": "*",
+    "levelup": "*",
+    "leveldown": "*",
+    "async":"*"
+  }
+}

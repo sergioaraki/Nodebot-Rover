@@ -1,0 +1,9 @@
+{
+"apps" :[
+	{"name":"Robot",
+	"script":"/home/pi/Robot/Robot.js",
+	"env":{
+		"NODE_ENV": "production"
+	}}
+	]
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Robot</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+  <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Robot</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Controles</a></li>
+	    <li><a href="/camera.html">Camara</a></li>
+            <li><a href="/gallery.html">Galeria</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+  <div class="container">
+        <button class="btn btn-lg btn-primary btn-block" id="buttonFront">Mover Adelante</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonLeft">Mover Izquierda</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonRight">Mover Derecha</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonStop">Parar</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonPhoto">Sacar Foto</button>
+	    <br><br>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonDelete">Borrar Fotos</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonRestart">Reiniciar</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonShutdown">Apagar</button>
+  </div><!-- /.container -->
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-dialog.min.js"></script>
+    <script src="js/socket.io.js"></script>
+    <script type="text/javascript">
+    var pathArray = window.location.host.split(':');
+    var socket = io.connect(window.location.protocol+'//'+pathArray[0]+':8082');
+    function showDialog(labelOk,messageText,socketAction){
+      BootstrapDialog.show({
+            title: 'Confirmar',
+            message: messageText,
+            buttons: [{
+                label: 'Cancelar',
+                action: function(dialogItself){
+                    dialogItself.close();
+                }
+            },{
+                label: labelOk,
+                cssClass: 'btn-primary',
+                action: function(dialogItself){
+                    socket.emit(socketAction);
+                    dialogItself.close();
+                }
+            }]
+        });
+    }
+    $('#buttonFront').button();
+    $('#buttonFront').click(function() {
+        socket.emit('front');
+    });
+    $('#buttonLeft').button();
+    $('#buttonLeft').click(function() {
+        socket.emit('left');
+    });
+    $('#buttonRight').button();
+    $('#buttonRight').click(function() {
+        socket.emit('right');
+    });
+    $('#buttonStop').button();
+    $('#buttonStop').click(function() {
+        socket.emit('stop');
+    });
+    $('#buttonPhoto').button();
+    $('#buttonPhoto').click(function() {
+        socket.emit('photo');
+    });
+    $('#buttonDelete').button();
+    $('#buttonDelete').click(function() {
+        showDialog('Borrar','Esta seguro que desea borrar las fotos?','deletePhotos');
+    });
+    $('#buttonRestart').button();
+    $('#buttonRestart').click(function() {
+        showDialog('Reiniciar','Esta seguro que desea reiniciar?','restart');
+    });
+    $('#buttonShutdown').button();
+    $('#buttonShutdown').click(function() {
+        showDialog('Apagar','Esta seguro que desea apagar?','shutdown');
+    });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Robot</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+  <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index.html">Robot</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/index.html">Controles</a></li>
+	    <li><a href="/camera.html">Camara</a></li>
+            <li class="active"><a href="#">Galeria</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+  <div class="container">
+      <div class="directorySlider"></div>
+  </div>
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/socket.io.js"></script>
+    <script src="js/directorySlider.js"></script>
+    <script type="text/javascript">
+    var pathArray = window.location.host.split(':');
+    var socket = io.connect(window.location.protocol+'//'+pathArray[0]+':8082');
+    socket.emit('gallery', function (data) {
+      $('.directorySlider').directorySlider({filebase:'photo_',directory: '../img/photos/',extension: 'jpg',numslides: data});
+    });
+    </script>
+  </body>
+</html>
+
