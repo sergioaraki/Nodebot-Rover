@@ -239,7 +239,7 @@ Robot code:
 Web controller:
 
 [Bootstrap](http://getbootstrap.com/)
-[Bootstrap](https://nakupanda.github.io/bootstrap3-dialog/)
+[Bootstrap-dialog](https://nakupanda.github.io/bootstrap3-dialog/)
 [Nipple](http://dubmediagroup.com/nipple/)
 [directorySlider](https://github.com/justinwhall/directorySlider)
 
