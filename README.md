@@ -198,7 +198,7 @@ Save, exit and then execute this commands:
 	sudo update-rc.d hostapd enable
 	sudo update-rc.d isc-dhcp-server enable
 
-If your wifi dongle requires 8188eu drivers, check this [Post](https://www.raspberrypi.org/forums/viewtopic.php?p=462982) and follow instructions to install them
+If your wifi dongle requires 8188eu drivers, check this [post](https://www.raspberrypi.org/forums/viewtopic.php?p=462982) and follow instructions to install them
 
 Execute this commands:
 
@@ -223,3 +223,26 @@ remove the wifi configuration added before, save, exit and reboot:
 Now you can connect to the Nodebot wifi in your computer or smartphone and access in your browser to: http://192.168.42.1:3000 and get control of your nodebot.
 
 ![](assets/web.png)
+
+## Tools used
+
+Robot code:
+
+[NodeJs](https://nodejs.org/en/)
+[PM2](http://pm2.keymetrics.io/)
+[express](http://expressjs.com/)
+[raspicam](https://www.npmjs.com/package/raspicam)
+[piface-node](https://www.npmjs.com/package/piface-node)
+[socket.io](http://socket.io/)
+[levelup](https://www.npmjs.com/package/levelup)
+
+Web controller:
+
+[Bootstrap](http://getbootstrap.com/)
+[Bootstrap](https://nakupanda.github.io/bootstrap3-dialog/)
+[Nipple](http://dubmediagroup.com/nipple/)
+[directorySlider](https://github.com/justinwhall/directorySlider)
+
+## Know issue
+
+Sometimes when the RaspberryPi boot the "router mode" fails and you can't connect with the Nodebot wifi, just restart the RaspberryPi.
