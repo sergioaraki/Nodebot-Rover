@@ -2,7 +2,7 @@
 
 ### Hardware you need
 
-1. **RaspberryPi** (A+ is the optimal but should work with B,B+)
+1. **RaspberryPi** (A+ is the best option but should work with B,B+)
 2. **RaspberryPi Camera module**
 3. **Micro SD Card** 
 4. **USB Wifi dongle**
@@ -240,7 +240,7 @@ Web controller:
 
 [Bootstrap](http://getbootstrap.com/)
 [Bootstrap-dialog](https://nakupanda.github.io/bootstrap3-dialog/)
-[Nipple](http://dubmediagroup.com/nipple/)
+[nippleJS](http://yoannmoinet.github.io/nipplejs/)
 [directorySlider](https://github.com/justinwhall/directorySlider)
 
 ## Know issue
