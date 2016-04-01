@@ -224,7 +224,7 @@ Now you can connect to the Nodebot wifi in your computer or smartphone and acces
 
 ![](assets/web.png)
 
-If you have a Mac and a Microsoft Xbox 360 controller, you can install this [Driver](https://github.com/360Controller/360Controller) and you will have joystick support in your Mac at the Camera tab.
+If you have a Mac and a Microsoft Xbox 360 controller, you can install this [Driver](https://github.com/360Controller/360Controller) and you will have joystick support in your Mac.
 
 ## Tools used
 

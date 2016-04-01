@@ -54,7 +54,7 @@
             title: 'Confirm',
             message: messageText,
             buttons: [{
-                label: 'Cancelar',
+                label: 'Cancel',
                 action: function(dialogItself){
                     dialogItself.close();
                 }
@@ -90,16 +90,110 @@
     });
     $('#buttonDelete').button();
     $('#buttonDelete').click(function() {
-        showDialog('Borrar','Are you sure you want to delete photos?','deletePhotos');
+        showDialog('Delete','Are you sure you want to delete photos?','deletePhotos');
     });
     $('#buttonRestart').button();
     $('#buttonRestart').click(function() {
-        showDialog('Reiniciar','Are you sure you want to reboot?','restart');
+        showDialog('Reboot','Are you sure you want to reboot?','restart');
     });
     $('#buttonShutdown').button();
     $('#buttonShutdown').click(function() {
-        showDialog('Apagar','Are you sure you want to shutdown?','shutdown');
+        showDialog('Shutdown','Are you sure you want to shutdown?','shutdown');
     });
+
+    //This is for joystick support in browser
+    //Buttons configuration for Chrome
+    var bUp = 3;
+    var bDown = 0;
+    var bLeft = 2;
+    var bRight = 1;
+    var aUp = 12;
+    var aDown = 13;
+    var aLeft = 14;
+    var aRight = 15;
+    var bL1 = 4;
+    var bR1 = 5;
+    //If Firefox switch button configurations
+    if (navigator.userAgent.indexOf("Firefox") > -1) {
+        bUp = 14;
+        bDown = 11; 
+        bLeft = 13;
+        bRight = 12;
+        aUp = 0;
+        aDown = 1;
+        aLeft = 2;
+        aRight = 3;
+        bL1 = 8;
+        bR1 = 9;
+    }
+    var start;
+    var interval;
+    var rAF = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.requestAnimationFrame;
+    var rAFStop = window.mozCancelRequestAnimationFrame || window.webkitCancelRequestAnimationFrame || window.cancelRequestAnimationFrame;
+
+    window.addEventListener("gamepadconnected", function() {
+    var gp = navigator.getGamepads()[0];
+      console.log("Gamepad connected at index " + gp.index + ": " + gp.id + ". It has " + gp.buttons.length + " buttons and " + gp.axes.length + " axes.");
+      robotLoop();
+    });
+    window.addEventListener("gamepaddisconnected", function() {
+      console.log("Waiting for gamepad.");
+      rAFStop(start);
+    });
+
+    if(!('GamepadEvent' in window)) {
+      // No gamepad events available, poll instead.
+      interval = setInterval(pollGamepads, 500);
+    }
+
+    function pollGamepads() {
+      var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+      for (var i = 0; i < gamepads.length; i++) {
+        var gp = gamepads[i];
+        if(gp) {
+          console.log("Gamepad connected at index " + gp.index + ": " + gp.id + ". It has " + gp.buttons.length + " buttons and " + gp.axes.length + " axes.");
+          robotLoop();
+          clearInterval(interval);
+        }
+      }
+    }
+
+    function buttonPressed(b) {
+      if (typeof(b) == "object") {
+        return b.pressed;
+      }
+      return b == 1.0;
+    }
+
+    function robotLoop() {
+      var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+      if (!gamepads)
+        return;
+
+      var gp = gamepads[0];
+      if (buttonPressed(gp.buttons[bUp]))
+        socket.emit('front');
+      if (buttonPressed(gp.buttons[bDown]))
+        socket.emit('stop');
+      if (buttonPressed(gp.buttons[bLeft]))
+        socket.emit('left');
+      if (buttonPressed(gp.buttons[bRight]))
+        socket.emit('right');
+      if (buttonPressed(gp.buttons[aUp]))
+        socket.emit('front');
+      if (buttonPressed(gp.buttons[aDown]))
+        socket.emit('stop');
+      if (buttonPressed(gp.buttons[aLeft]))
+        socket.emit('left');
+      if (buttonPressed(gp.buttons[aRight]))
+        socket.emit('right');
+      if (buttonPressed(gp.buttons[bL1]))
+        socket.emit('photo');
+      if (buttonPressed(gp.buttons[bR1]))
+        socket.emit('photo');
+
+      start = rAF(robotLoop);
+    }
     </script>
   </body>
 </html>
