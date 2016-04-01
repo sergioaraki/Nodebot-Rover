@@ -23,9 +23,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/index.html">Controles</a></li>
-            <li class="active"><a href="#">Camara</a></li>
-	    <li><a href="/gallery.html">Galeria</a></li>
+            <li><a href="/index.html">Controls</a></li>
+            <li class="active"><a href="#">Camera</a></li>
+	          <li><a href="/gallery.html">Gallery</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -35,7 +35,7 @@
 	<div id="camera" class="embed-responsive embed-responsive-16by9">
       		<iframe class="embed-responsive-item" src="/liveCamera"></iframe>
 	</div>
-	<br><br>
+  <br><br>
 	<div id="joy" style="display: block;position: absolute;width:100%;height:100%;min-height:100%"></div>
   </div>
     <script src="js/jquery-1.11.1.min.js"></script>
@@ -51,21 +51,107 @@
       color: 'blue'
     });
     manager.on('added', function(evt, nipple){
-      nipple.on('plain:up', function(){
+      nipple.on('dir:up', function(){
         socket.emit('front');
       });
-      nipple.on('plain:down', function(){
+      nipple.on('dir:down', function(){
         socket.emit('stop');
       });
-      nipple.on('plain:left', function(){
+      nipple.on('dir:left', function(){
         socket.emit('left');
       });
-      nipple.on('plain:right', function(){
+      nipple.on('dir:right', function(){
         socket.emit('right');
       });
     }).on('removed', function(){
        socket.emit('stop');
     });
+
+    //This is for joystick support in browser
+    //Buttons configuration for Chrome
+    var bUp = 3;
+    var bDown = 0;
+    var bLeft = 2;
+    var bRight = 1;
+    var aUp = 12;
+    var aDown = 13;
+    var aLeft = 14;
+    var aRight = 15;
+    //If Firefox switch button configurations
+    if (navigator.userAgent.indexOf("Firefox") > -1) {
+        bUp = 14;
+        bDown = 11; 
+        bLeft = 13;
+        bRight = 12;
+        aUp = 0;
+        aDown = 1;
+        aLeft = 2;
+        aRight = 3;
+    }
+    var start;
+    var interval;
+    var rAF = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.requestAnimationFrame;
+    var rAFStop = window.mozCancelRequestAnimationFrame || window.webkitCancelRequestAnimationFrame || window.cancelRequestAnimationFrame;
+
+    window.addEventListener("gamepadconnected", function() {
+    var gp = navigator.getGamepads()[0];
+      console.log("Gamepad connected at index " + gp.index + ": " + gp.id + ". It has " + gp.buttons.length + " buttons and " + gp.axes.length + " axes.");
+      robotLoop();
+    });
+    window.addEventListener("gamepaddisconnected", function() {
+      console.log("Waiting for gamepad.");
+      rAFStop(start);
+    });
+
+    if(!('GamepadEvent' in window)) {
+      // No gamepad events available, poll instead.
+      interval = setInterval(pollGamepads, 500);
+    }
+
+    function pollGamepads() {
+      var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+      for (var i = 0; i < gamepads.length; i++) {
+        var gp = gamepads[i];
+        if(gp) {
+          console.log("Gamepad connected at index " + gp.index + ": " + gp.id + ". It has " + gp.buttons.length + " buttons and " + gp.axes.length + " axes.");
+          robotLoop();
+          clearInterval(interval);
+        }
+      }
+    }
+
+    function buttonPressed(b) {
+      if (typeof(b) == "object") {
+        return b.pressed;
+      }
+      return b == 1.0;
+    }
+
+    function robotLoop() {
+      var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+      if (!gamepads)
+        return;
+
+      var gp = gamepads[0];
+      if (buttonPressed(gp.buttons[bUp]))
+        socket.emit('front');
+      if (buttonPressed(gp.buttons[bDown]))
+        socket.emit('stop');
+      if (buttonPressed(gp.buttons[bLeft]))
+        socket.emit('left');
+      if (buttonPressed(gp.buttons[bRight]))
+        socket.emit('right');
+      if (buttonPressed(gp.buttons[aUp]))
+        socket.emit('front');
+      if (buttonPressed(gp.buttons[aDown]))
+        socket.emit('stop');
+      if (buttonPressed(gp.buttons[aLeft]))
+        socket.emit('left');
+      if (buttonPressed(gp.buttons[aRight]))
+        socket.emit('right');
+
+      start = rAF(robotLoop);
+    }
     </script>
   </body>
 </html>

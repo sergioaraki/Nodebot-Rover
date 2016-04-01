@@ -224,6 +224,8 @@ Now you can connect to the Nodebot wifi in your computer or smartphone and acces
 
 ![](assets/web.png)
 
+If you have a Mac and a Microsoft Xbox 360 controller, you can install this [Driver](https://github.com/360Controller/360Controller) and you will have joystick support in your Mac at the Camera tab.
+
 ## Tools used
 
 Robot code:
@@ -242,7 +244,8 @@ Web controller:
 [Bootstrap-dialog](https://nakupanda.github.io/bootstrap3-dialog/)
 [nippleJS](http://yoannmoinet.github.io/nipplejs/)
 [directorySlider](https://github.com/justinwhall/directorySlider)
+[HTML5 Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API)
 
 ## Know issue
 
-Sometimes when the RaspberryPi boot the "router mode" fails and you can't connect with the Nodebot wifi, just restart the RaspberryPi.
+Sometimes when the RaspberryPi boot the "router mode" fails and you can't connect with the Nodebot wifi, just restart the RaspberryPi and try again.

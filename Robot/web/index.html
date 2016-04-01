@@ -24,23 +24,23 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Controles</a></li>
-	    <li><a href="/camera.html">Camara</a></li>
-            <li><a href="/gallery.html">Galeria</a></li>
+            <li class="active"><a href="#">Controls</a></li>
+	        <li><a href="/camera.html">Camera</a></li>
+            <li><a href="/gallery.html">Gallery</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
   <div class="container">
-        <button class="btn btn-lg btn-primary btn-block" id="buttonFront">Mover Adelante</button>
-        <button class="btn btn-lg btn-primary btn-block" id="buttonLeft">Mover Izquierda</button>
-        <button class="btn btn-lg btn-primary btn-block" id="buttonRight">Mover Derecha</button>
-        <button class="btn btn-lg btn-primary btn-block" id="buttonStop">Parar</button>
-        <button class="btn btn-lg btn-primary btn-block" id="buttonPhoto">Sacar Foto</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonFront">Move Front</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonLeft">Move lLeft</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonRight">Move Right</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonStop">Stop</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonPhoto">Take Photo</button>
 	    <br><br>
-        <button class="btn btn-lg btn-primary btn-block" id="buttonDelete">Borrar Fotos</button>
-        <button class="btn btn-lg btn-primary btn-block" id="buttonRestart">Reiniciar</button>
-        <button class="btn btn-lg btn-primary btn-block" id="buttonShutdown">Apagar</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonDelete">Delete Photos</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonRestart">Reboot</button>
+        <button class="btn btn-lg btn-primary btn-block" id="buttonShutdown">Shutdown</button>
   </div><!-- /.container -->
     <script src="js/jquery-1.11.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -51,7 +51,7 @@
     var socket = io.connect(window.location.protocol+'//'+pathArray[0]+':8082');
     function showDialog(labelOk,messageText,socketAction){
       BootstrapDialog.show({
-            title: 'Confirmar',
+            title: 'Confirm',
             message: messageText,
             buttons: [{
                 label: 'Cancelar',
@@ -90,15 +90,15 @@
     });
     $('#buttonDelete').button();
     $('#buttonDelete').click(function() {
-        showDialog('Borrar','Esta seguro que desea borrar las fotos?','deletePhotos');
+        showDialog('Borrar','Are you sure you want to delete photos?','deletePhotos');
     });
     $('#buttonRestart').button();
     $('#buttonRestart').click(function() {
-        showDialog('Reiniciar','Esta seguro que desea reiniciar?','restart');
+        showDialog('Reiniciar','Are you sure you want to reboot?','restart');
     });
     $('#buttonShutdown').button();
     $('#buttonShutdown').click(function() {
-        showDialog('Apagar','Esta seguro que desea apagar?','shutdown');
+        showDialog('Apagar','Are you sure you want to shutdown?','shutdown');
     });
     </script>
   </body>
