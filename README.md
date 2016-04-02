@@ -223,8 +223,24 @@ remove the wifi configuration added before, save, exit and reboot:
 Now you can connect to the Nodebot wifi in your computer or smartphone and access in your browser to: http://192.168.42.1:3000 and get control of your nodebot.
 
 ![](assets/web.png)
+![](assets/web2.png)
+
+## Piface
+
+![](assets/PifaceDigital2.png)
+
+If the wifi fails you can use Piface switchs to execute some actions:
+
+1. S3 will close relays and stop motors
+2. S2 will take a photo
+3. S1 will reboot the RaspberryPi 
+4. S0 will shutdown the RaspberryPi
+
+## Optional
 
 If you have a Mac and a Microsoft Xbox 360 controller, you can install this [Driver](https://github.com/360Controller/360Controller) and you will have joystick support in your Mac.
+
+![](assets/gamepad.jpg)
 
 ## Tools used
 
@@ -246,6 +262,6 @@ Web controller:
 [directorySlider](https://github.com/justinwhall/directorySlider)
 [HTML5 Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API)
 
-## Know issue
+## Known issue
 
 Sometimes when the RaspberryPi boot the "router mode" fails and you can't connect with the Nodebot wifi, just restart the RaspberryPi and try again.
