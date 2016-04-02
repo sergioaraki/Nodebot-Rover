@@ -227,7 +227,7 @@ Now you can connect to the Nodebot wifi in your computer or smartphone and acces
 
 ## Piface
 
-![](assets/PifaceDigital2.png)
+![](assets/PiFaceDigital2.png)
 
 If the wifi fails you can use Piface switchs to execute some actions:
 
@@ -238,7 +238,7 @@ If the wifi fails you can use Piface switchs to execute some actions:
 
 ## Optional
 
-If you have a Mac and a Microsoft Xbox 360 controller, you can install this [Driver](https://github.com/360Controller/360Controller) and you will have joystick support in your Mac.
+If you have a Mac and a Microsoft Xbox 360 controller, you can install this [driver](https://github.com/360Controller/360Controller) and you will have joystick support in your Mac.
 
 ![](assets/gamepad.jpg)
 
