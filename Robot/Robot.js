@@ -43,33 +43,88 @@ function deletePhotos() {
 }
 
 var pfio = require('piface-node');
+var listening = false;
+var prev_state = 0;
+startListening();
+
+function startListening() {
+  pfio.init();
+  listening = true;
+  watchInputs();
+}
+
+function stopListening() {
+  if (listening)
+    pfio.deinit();
+}
+
+function watchInputs() {
+  var state;
+  state = pfio.read_input();
+  if (state !== prev_state) {
+    var changed = prev_state ^ state;
+    for (var pin = 0; pin < 8; pin++) {
+      if ((changed & (1 << pin)) === (1 << pin)) {
+        switch (pin) {
+          case 3:
+            bothOff();
+            break;
+          case 2:
+            takePhoto();
+            break;
+          case 1:
+            reboot();
+            break;
+          case 0:
+            shutdown();
+            break;
+        }
+      }
+    }
+    prev_state = state;
+  }
+  setTimeout(watchInputs, 10);
+}
 
 function firstOn(){
-  pfio.init();
-  pfio.digital_write(0,1);
-  pfio.digital_write(1,0);
-  pfio.deinit();
+  if (listening){
+    pfio.digital_write(0,1);
+    pfio.digital_write(1,0);
+  }
 }
 
 function secondOn(){
-  pfio.init();
-  pfio.digital_write(0,0);
-  pfio.digital_write(1,1);
-  pfio.deinit();
+  if (listening){
+    pfio.digital_write(0,0);
+    pfio.digital_write(1,1);
+  }
 }
 
 function bothOn(){
-  pfio.init();
-  pfio.digital_write(0,1);
-  pfio.digital_write(1,1);
-  pfio.deinit();
+  if (listening){
+    pfio.digital_write(0,1);
+    pfio.digital_write(1,1);
+  }
 }
 
 function bothOff(){
-  pfio.init();
-  pfio.digital_write(0,0);
-  pfio.digital_write(1,0);
-  pfio.deinit();
+  if (listening){
+    pfio.digital_write(0,0);
+    pfio.digital_write(1,0);
+  }
+}
+
+function takePhoto(){
+  camera.set('output',basePath + '/web/img/photos/photo_'+photoNumber+'.jpg');
+  camera.start();
+}
+
+function reboot(){
+  exec("sudo reboot", function (error, stdout, stderr) {});
+}
+
+function shutdown(){
+  exec("sudo shutdown -h now", function (error, stdout, stderr) {});
 }
 
 var exec = require('child_process').exec;
@@ -104,8 +159,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('photo', function () {
-    camera.set('output',basePath + '/web/img/photos/photo_'+photoNumber+'.jpg');
-    camera.start();
+    takePhoto();
   });
 
   socket.on('deletePhotos', function () {
@@ -121,11 +175,11 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('restart', function () {
-    exec("sudo reboot", function (error, stdout, stderr) {});
+    reboot();
   });
 
   socket.on('shutdown', function () {
-    exec("sudo shutdown -h now", function (error, stdout, stderr) {});
+    shutdown();
   });
 });
 
@@ -156,3 +210,6 @@ app.get('/liveCamera', function(req,res) {
 });
 
 app.listen(process.env.PORT || 3000);
+
+process.on('exit', stopListening);
+process.on('SIGINT', stopListening);
