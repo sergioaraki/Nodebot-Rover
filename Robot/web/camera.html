@@ -90,8 +90,8 @@
     }
     var start;
     var interval;
-    var rAF = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.requestAnimationFrame;
-    var rAFStop = window.mozCancelRequestAnimationFrame || window.webkitCancelRequestAnimationFrame || window.cancelRequestAnimationFrame;
+    var rAF = window.requestAnimationFrame || window.mozRequestAnimationFrame;
+    var rAFStop = window.cancelRequestAnimationFrame || window.mozCancelRequestAnimationFrame;
 
     window.addEventListener("gamepadconnected", function() {
     var gp = navigator.getGamepads()[0];
@@ -103,7 +103,7 @@
       rAFStop(start);
     });
 
-    if(!('GamepadEvent' in window)) {
+    if (!('ongamepadconnected' in window)) {
       // No gamepad events available, poll instead.
       interval = setInterval(pollGamepads, 500);
     }
