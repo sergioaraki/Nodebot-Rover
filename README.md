@@ -10,14 +10,14 @@
 6. **Portable battery** with microUSB for RaspberryPi power, you will need more power if using other RaspberryPi than A+
 7. **Rover kit** any similar kit to [this](http://www.active-robots.com/4wd-atv-robot-chassis-kit) should work fine
 
-## Getting Started
+## First steps
 
 This tutorial will work with raspbian-wheezy, you can download this from [here](https://downloads.raspberrypi.org/raspbian/images/raspbian-2015-05-07/2015-05-05-raspbian-wheezy.zip), is not working with jessie yet...
 
 Make a clean install of raspbian-wheezy on your sdcard, instructions [here](https://www.raspberrypi.org/documentation/installation/installing-images/). 
 For the first steps you will need a TV or monitor with HDMI, USB keyboard, USB mouse and the USB Wifi dongle connected.
 
-In the first boot in raspi-config expand file system, enable ssh, camera module and piface, also change hostname from raspberrypi to nodebot.
+In the first boot in raspi-config expand file system, enable ssh, camera module and piface (SPI), also change hostname from raspberrypi to nodebot.
 
 Execute this command:
 
@@ -47,20 +47,33 @@ Now you can disconnect TV or monitor, USB keyboard and USB mouse, just leave the
 
 Upgrade system with these commands:
 
-	sudo apt-get update
-	sudo apt-get -y upgrade
-	sudo rpi-update
+	sudo apt-get update && sudo apt-get -y upgrade && sudo rpi-update
 	sudo nano /boot/cmdline.txt
 
 At the end of the line add one space and: 
 
 	cgroup_enable=memory
 
+Make a virtual partition used by camera streaming, execute this commands:
+
+	sudo mkdir /ram
+	sudo nano /etc/fstab
+
+Add this line:
+
+	tmpfs /ram tmpfs nodev,nosuid,size=1M 0 0 
+
+Save, exit and then execute this commands:
+
+	sudo mount -a
+
 Reboot:
 
 	sudo reboot
 
-After reboot:
+## Install software
+
+Dependencies for [piface-node](https://github.com/darrylhodgins/piface-node#get-the-piface-c-libraries):
 
 	sudo apt-get -y install automake libtool git
 	git clone https://github.com/thomasmacpherson/piface.git
@@ -74,20 +87,34 @@ Reboot:
 
 	sudo reboot
 
-After reboot:
+Install [NodeJs](https://nodejs.org/en/) 0.10.36, yes is an old version but this is compatible with piface-node:
 
 	wget http://node-arm.herokuapp.com/node_0.10.36_armhf.deb
 	sudo dpkg -i node_0.10.36_armhf.deb
-	sudo npm install pm2@latest -g --unsafe-perm
-	pm2 startup ubuntu
 
-Pay attention it should ask you to run another command, copy, paste and run that command
+Clone Nodebot-Rover repository and install:
 
 	git clone https://github.com/sergioaraki/Nodebot-Rover.git
 	sudo mv /home/pi/Nodebot-Rover/Robot /home/pi/Robot
 	cd Robot
 	npm install
 	cd ..
+
+Install [PM2](http://pm2.keymetrics.io/) this will run the Nodebot code at boot and keep running:
+
+	sudo npm install pm2@latest -g --unsafe-perm
+	pm2 startup ubuntu
+
+Pay attention it should ask you to run another command, copy, paste and run that command
+Lets config the Nodebot code in PM2:
+
+	pm2 start /home/pi/Robot/process.json
+	pm2 save
+
+## RaspberryPi as access point
+
+Execute this commands:
+	
 	sudo apt-get -y install hostapd isc-dhcp-server
 	sudo nano /etc/dhcp/dhcpd.conf
 
@@ -200,30 +227,20 @@ Save, exit and then execute this commands:
 
 If your wifi dongle requires 8188eu drivers, check this [post](https://www.raspberrypi.org/forums/viewtopic.php?p=462982) and follow instructions to install them
 
-Execute this commands:
+Execute this command:
 
-	sudo mkdir /ram
-	sudo nano /etc/fstab
-
-Add this line:
-
-	tmpfs /ram tmpfs nodev,nosuid,size=1M 0 0 
-
-Save, exit and then execute this commands:
-
-	sudo mount -a
-	pm2 start /home/pi/Robot/process.json
-	pm2 save
 	sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 
-remove the wifi configuration added before, save, exit and reboot:
+remove the wifi configuration added at the beginning, save, exit and reboot:
 
-		sudo reboot
+	sudo reboot
 
-Now you can connect to the Nodebot wifi in your computer or smartphone and access in your browser to: http://192.168.42.1:3000 and get control of your nodebot.
+At this point you cannot connect to the RaspberryPi in your wifi, now you need to connect to the Nodebot wifi in your computer or smartphone and access in your browser to: http://192.168.42.1:3000 and get control of your nodebot.
 
 ![](assets/web.png)
 ![](assets/web2.png)
+
+When the Nodebot is up and running, use the shutdown button on first screen of the web or piface's S0 switch to shutdown the RaspberryPi and avoid damage the SDCard.
 
 ## Piface
 
@@ -238,7 +255,7 @@ If the wifi fails you can use Piface switchs to execute some actions:
 
 ## Optional
 
-If you have a Mac and a Microsoft Xbox 360 controller, you can install this [driver](https://github.com/360Controller/360Controller) and you will have joystick support in your Mac.
+If you have a Mac (in Windows this maybe works out of the box) and a Microsoft Xbox 360 controller, you can install this [driver](https://github.com/360Controller/360Controller) and you will have joystick support in your Mac.
 
 ![](assets/gamepad.jpg)
 
@@ -246,8 +263,6 @@ If you have a Mac and a Microsoft Xbox 360 controller, you can install this [dri
 
 Robot code:
 
-[NodeJs](https://nodejs.org/en/)
-[PM2](http://pm2.keymetrics.io/)
 [express](http://expressjs.com/)
 [raspicam](https://www.npmjs.com/package/raspicam)
 [piface-node](https://www.npmjs.com/package/piface-node)
