@@ -1,0 +1,17 @@
+{
+  "name": "LeapControl",
+  "version": "0.0.1",
+  "description": "Control Nodebot with LeapMotion and keyboard",
+  "main": "server.js",
+  "private": true,
+  "author": {
+    "name": "Sergio Araki",
+    "url": "http://www.sergioaraki.com.ar"
+  },
+  "dependencies": {
+	 "socket.io-client": "*",
+	 "leapjs": "*",
+	 "keypress": "*"
+  }
+}
+

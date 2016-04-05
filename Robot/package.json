@@ -1,7 +1,7 @@
 {
-  "name": "Robot",
+  "name": "Nodebot Rover",
   "version": "0.0.1",
-  "description": "Controlador del Robot",
+  "description": "Nodebot Rover",
   "main": "Robot.js",
   "private": true,
   "author": {

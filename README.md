@@ -105,7 +105,8 @@ Install [PM2](http://pm2.keymetrics.io/) this will run the Nodebot code at boot 
 	sudo npm install pm2@latest -g --unsafe-perm
 	pm2 startup ubuntu
 
-Pay attention it should ask you to run another command, copy, paste and run that command
+Pay attention it should ask you to run another command, copy, paste and run that command.
+
 Lets config the Nodebot code in PM2:
 
 	pm2 start /home/pi/Robot/process.json
@@ -255,9 +256,19 @@ If the wifi fails you can use Piface switchs to execute some actions:
 
 ## Optional
 
-If you have a Mac (in Windows this maybe works out of the box) and a Microsoft Xbox 360 controller, you can install this [driver](https://github.com/360Controller/360Controller) and you will have joystick support in your Mac.
+- If you have a Mac (in Windows this maybe works out of the box) and a Microsoft Xbox 360 controller, you can install this [driver](https://github.com/360Controller/360Controller) and you will have joystick support in your Mac.
 
 ![](assets/gamepad.jpg)
+
+- If you have a [LeapMotion](https://www.leapmotion.com/) you can copy the Leap folder of this repo in your PC, run this command inside of that folder:
+
+	npm install
+
+Connect to the Nodebot wifi and then execute this command:
+
+	node server.js
+
+Now you can use your LeapMotion to move the Nodebot, also this will allow control with the arrows of your keyboard and spacebar to take a photo, just press 'q' to quit.
 
 ## Tools used
 
@@ -276,6 +287,12 @@ Web controller:
 [nippleJS](http://yoannmoinet.github.io/nipplejs/)
 [directorySlider](https://github.com/justinwhall/directorySlider)
 [HTML5 Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API)
+
+LeapMotion and keyboard:
+
+[socket.io-client](https://www.npmjs.com/package/socket.io-client)
+[leapjs](https://www.npmjs.com/package/leapjs)
+[keypress](https://www.npmjs.com/package/keypress)
 
 ## Known issue
 
