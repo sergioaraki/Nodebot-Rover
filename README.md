@@ -260,7 +260,9 @@ If the wifi fails you can use Piface switchs to execute some actions:
 
 ![](assets/gamepad.jpg)
 
-- If you have a [LeapMotion](https://www.leapmotion.com/) you can copy the Leap folder of this repo in your PC, run this command inside of that folder:
+- If you have a [LeapMotion](https://www.leapmotion.com/) you can copy the Leap folder of this repo in your PC.
+
+Run this command inside of that folder:
 
 	npm install
 
